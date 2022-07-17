@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
-import ReactDOM from "react-dom/client";
 import {
     BrowserRouter as Router,
     Routes,
     Route,
 } from "react-router-dom";
-import LoginPage from 'pages/LoginPage';
+import React, { useState, setState } from 'react';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 
 function App() {
+    const [authDetails, setAuthDetails] = useState(
+        localStorage.getItem('email')
+    );
+
+    function setAuth(email, password) {
+        localStorage.setItem('email', email);
+        localStorage.setItem('password', password);
+        setAuthDetails(email);
+    }
+
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<App />}>
-                    <Route path="login" element={<LoginPage />} />
-                    {/* <Route path="signup" element={<SignupPage />} /> */}
-                </Route>
-            </Routes>
-        </BrowserRouter>
+        <div>
+            {authDetails}
+            <Router>
+                <Routes>
+                    <Route path="/" element={<App />} />
+                    <Route path="/login" element={<LoginPage setAuth={setAuth} />} />
+                    <Route path="/signup" element={<SignupPage />} />
+                </Routes>
+            </Router>
+        </div>
     );
 }
 
