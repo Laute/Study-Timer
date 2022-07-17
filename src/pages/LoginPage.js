@@ -1,18 +1,20 @@
 import React, { useState, setState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header.js'
 
-function LoginPage() {
+function LoginPage({ setAuth, ...props }) {
     return (
         <div class="login-page">
             <Header />
             <LoginBody />
-            <LoginForm />
+            <LoginForm setAuth={setAuth} />
         </div>
     )
 }
 
 
 function LoginBody() {
+    const navigate = useNavigate();
     return (
         <div class="login-body">
             <div class="centred-body">
@@ -20,15 +22,16 @@ function LoginBody() {
             </div>
             <div class="body">
                 <p>New to Pomodoro?</p>
-                <button class="btn-small">Create an account</button>
+                <button class="btn-small" onClick={() => navigate("/signup")}>Create an account</button>
             </div>
         </div>
     )
 }
 
-function LoginForm() {
+function LoginForm({ setAuth, ...props }) {
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
+
     const handleInputChange = (e) => {
         const { id, value } = e.target;
         if (id === "email") {
@@ -38,9 +41,11 @@ function LoginForm() {
             setPassword(value);
         }
     }
+
     const handleSubmit = () => {
-        console.log(email, password);
+        setAuth(email, password)
     }
+
     return (
         <div class="form">
             <form class="form-fields">
