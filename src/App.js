@@ -6,6 +6,7 @@ import {
 import React, { useState, setState } from 'react';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import Timer from "./components/Timer";
 
 function App() {
     const [authDetails, setAuthDetails] = useState(
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/" element={<App />} />
                     <Route path="/login" element={<LoginPage setAuth={setAuth} />} />
                     <Route path="/signup" element={<SignupPage />} />
+                    <Route path="/timer" element={<Timer />} />
                 </Routes>
             </Router>
         </div>
