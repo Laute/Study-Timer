@@ -3,9 +3,10 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import React, { useState, setState } from 'react';
+import React, { useState } from 'react';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import ProfilePage from './pages/ProfilePage';
 import Timer from "./components/Timer";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
                     <Route path="/" element={<App />} />
                     <Route path="/login" element={<LoginPage setAuth={setAuth} />} />
                     <Route path="/signup" element={<SignupPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/timer" element={<Timer />} />
                 </Routes>
             </Router>
