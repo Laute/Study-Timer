@@ -75,6 +75,7 @@ const Timer = () => {
     setPeriod((period) => period + 1);
   };
 
+  // Setting study, break and long break durations from input field 
   const handleStudyDuration = (event) => {
     setStudyDuration(event.target.value * 60);
   };
@@ -87,11 +88,13 @@ const Timer = () => {
     setLongBreakDuration(event.target.value * 60);
   };
 
+  // Toggles start/pause button, settings disappear when start button is toggled  
   const handleStart = () => {
     setIsPlaying(!isPlaying);
     isPlaying && period === 0 ? setShowSettings(true) : setShowSettings(false)
   }
 
+  // Toggles restart button, settings reappear, resets period and break
   const handleRestart = () => {
     setIsPlaying(false);
     setShowSettings(true);
@@ -104,12 +107,14 @@ const Timer = () => {
     handleOnComplete(); 
   }
 
+  // Toggles stepper 
   const handleStepper = () => {
     if (period % 2 === 0) {
       setStepperIndex((index) => (index + 1)); 
     }
   }
 
+  // Setting study, break and long break durations from preset duration buttons 
   const handleStudyInput = (duration) => {
     setStudyDuration(duration * 60); 
     document.getElementById("study-input").value = `${duration}`;
