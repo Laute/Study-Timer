@@ -57,10 +57,12 @@ const Timer = () => {
 
   const handleOnComplete = () => {
     handleStepper();
+    handleBreakStats();
 
     // end of study session
     if (period > FINAL_PERIOD) { 
       setIsPlaying(false);
+      handleTotalStats();
       return { shouldRepeat: false };
     }
 
@@ -74,6 +76,56 @@ const Timer = () => {
     // incrementing period restarts the timer as it's the timer key
     setPeriod((period) => period + 1);
   };
+
+  // Recording break statistics 
+  const handleBreakStats = () => {
+    if (isBreak) {
+      // Dummy user 
+      const userId = 0; 
+      const data = JSON.parse(localStorage.getItem('users')); 
+      console.log(data); 
+      
+      if (data === null) { // If localStorage is empty, add first user (and its stats) in an array
+        const newSession = {
+          id: userId, 
+          breakStats: [Date.now()], 
+          totalStats: [], 
+        }
+
+        localStorage.setItem('users', JSON.stringify([newSession])); 
+      } else if (data.find(user => user.id === userId) === undefined) { // If user does not exist in localStorage, create and add user obj to localStorage array 
+        const newUser = {
+          id: userId, 
+          breakStats: [Date.now()], 
+          totalStats: [], 
+        }
+
+        data.push(newUser); 
+        localStorage.setItem('users', JSON.stringify(data));
+      } else { // Get user obj with id = userId, add date to user's breakStats array
+        data.find(user => user.id === userId).breakStats.push(Date.now()); 
+        localStorage.setItem('users', JSON.stringify(data));
+      }
+    }
+  }
+
+  // Recording total time studied stats 
+  const handleTotalStats = () => {
+    // Dummy user 
+    const userId = 0;
+
+    const newStat = {
+      date: Date.now(), 
+      timeStudied: studyDuration * NUM_STUDY_PERIODS, // in seconds 
+    } 
+
+    const data = JSON.parse(localStorage.getItem('users')); 
+    console.log(data);
+
+    // Get user with userId, add to newStat obj to totalStats array 
+    data.find(user => user.id === userId).totalStats.push(newStat); 
+    localStorage.setItem('users', JSON.stringify(data));
+  }
 
   const handleStudyDuration = (event) => {
     setStudyDuration(event.target.value * 60);
