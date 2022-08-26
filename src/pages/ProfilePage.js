@@ -24,8 +24,114 @@ function ProfilePage() {
     // }
 
     const [color, setColor] = React.useState(null);
-    const [avg_button_selection, setAvg_Button_Selection] = React.useState(null);
-    const [total_button_selection, setTotal_Button_Selection] = React.useState(null);
+    const [Study_Time_button_selection, setStudy_Time_Button_Selection] = React.useState(null);
+    const [Study_Sessions_button_selection, setStudy_Sessions_Button_Selection] = React.useState(null);
+    const [Breaks_button_selection, setBreaks_Button_Selection] = React.useState(null);
+
+
+    // Getting break data
+    const data = JSON.parse(localStorage.getItem('users'));
+    var one_day_ago = new Date();
+    var breaks_in_past_day = 0;
+    one_day_ago.setDate(one_day_ago.getDate() - 1);
+
+    var one_week_ago = new Date();
+    var breaks_in_past_week = 0;
+    one_week_ago.setDate(one_week_ago.getDate() - 7);
+
+    var one_month_ago = new Date();
+    var breaks_in_past_month = 0;
+    one_month_ago.setMonth(one_month_ago.getMonth() - 1);
+
+    var one_year_ago = new Date();
+    var breaks_in_past_year = 0;
+    one_year_ago.setFullYear(one_year_ago.getFullYear() - 1);
+
+    if (data != null) {
+        for (var i = 0; i < data[0].breakStats.length; i++) { 
+            var date = new Date(data[0].breakStats[i]);
+            if (date >= one_day_ago) {
+                breaks_in_past_day++;
+            }
+            if (date >= one_week_ago) {
+                breaks_in_past_week++;
+            }
+            if (date >= one_month_ago) {
+                breaks_in_past_month++;
+            }
+            if (date >= one_year_ago) {
+                breaks_in_past_year++;
+            }
+        }
+    
+        // Getting total study time data
+        // and number of study sessions data
+        var study_time_in_past_day = 0;
+        var study_time_in_past_week = 0;
+        var study_time_in_past_month = 0;
+        var study_time_in_past_year = 0;
+
+        var study_sessions_in_past_day = 0;
+        var study_sessions_in_past_week = 0;
+        var study_sessions_in_past_month = 0;
+        var study_sessions_in_past_year = 0;
+
+        for (var i = 0; i < data[0].totalStats.length; i++) { 
+            var date = new Date(data[0].totalStats[i].date);
+            var time_studied = data[0].totalStats[i].timeStudied;
+
+            if (date >= one_day_ago) {
+                study_time_in_past_day += time_studied;
+                study_sessions_in_past_day++;
+            }
+            if (date >= one_week_ago) {
+                study_time_in_past_week += time_studied;
+                study_sessions_in_past_week++;
+            }
+            if (date >= one_month_ago) {
+                study_time_in_past_month += time_studied;
+                study_sessions_in_past_month++;
+            }
+            if (date >= one_year_ago) {
+                study_time_in_past_year += time_studied;
+                study_sessions_in_past_year++;
+            }
+        }
+
+        // Getting streak data
+        var streak = 0;
+        var current_day = new Date();
+        current_day.setDate(current_day.getDate());
+        current_day.setMonth(current_day.getMonth());
+        current_day.setFullYear(current_day.getFullYear());
+
+        while (1) {
+            var studied_on_current_day = false;
+            for (var i = 0; i < data[0].totalStats.length; i++) { 
+                var date = new Date(data[0].totalStats[i].date);
+
+                if (current_day.toDateString() === date.toDateString())  {
+                    studied_on_current_day = true;
+                }
+            }
+            if (studied_on_current_day == false) {
+                break;
+            }
+            streak++;
+            current_day.setDate(current_day.getDate() - 1);
+        }
+    }
+    else {
+        streak = 0;
+        study_time_in_past_day = 0;
+        study_time_in_past_week = 0;
+        study_time_in_past_month = 0;
+        study_time_in_past_year = 0;
+        study_sessions_in_past_day = 0;
+        study_sessions_in_past_week = 0;
+        study_sessions_in_past_month = 0;
+        study_sessions_in_past_year = 0;
+    }
 
     return (
         <div className='profile'>
@@ -44,29 +150,20 @@ function ProfilePage() {
                         <ul id='profile_section_list'>
                             <div class='form_element'>
                                 <li> First Name: </li>
-                            
-                               {/* <input type="text" name="first_name" /> */}
-                               {/* <text> Sohum </text> */}
                                <FirstName colour={color} firstname='Sohum'/>
                                
                             </div>
                             <div class='form_element'>
                                 <li> Last Name: </li>
-                                {/* <input type="text" name="last_name" /> */}
-                                {/* <text> Shah </text> */}
                                 <LastName colour={color} lastname='Shah'/>
                             </div>
                             <div class='form_element'>
                                 <li> Username: </li>
-                                {/* <input type="text" name="username" /> */}
-                                {/* <text> username101 </text> */}
                                 <Username colour={color} username='username101' />
 
                             </div>
                             <div class='form_element'>
                                 <li> Email address: </li>
-                                {/* <input type="text" name="email_address" /> */}
-                                {/* <text> email@address.com </text> */}
                                 <Email colour={color} email='email@address.com' />
 
                             </div>
@@ -75,31 +172,33 @@ function ProfilePage() {
                 </div>
                 <div id='statistics'><h1>Personal Statistics</h1>
                     <ul id='statistics_list'>
-                        <li>Average number of study periods completed per day:</li>
+                        <li>Total study time:</li>
                       
-                            {/* <h2 id='stat1'>23</h2> */}
                             <div id='stat1'>
-                                <Avg_Study_Periods colour={color} selection={avg_button_selection} day_value = '14' week_value = '23' month_value = '34' year_value = '48'/>
+                                <Avg_Study_Periods type='study_time' colour={color} selection={Study_Time_button_selection} day_value = {study_time_in_past_day} week_value = {study_time_in_past_week} month_value = {study_time_in_past_month} year_value = {study_time_in_past_year}/>
                             </div>
                         
-                        <HorizontalRadioButton ButtonSelection={data=>setAvg_Button_Selection(data)}/>
+                        <HorizontalRadioButton ButtonSelection={data=>setStudy_Time_Button_Selection(data)}/>
                         <br />
-                        <li>Total number of study periods completed:</li>
-                        {/* <h2 id='stat1'>95</h2> */}
+
+                        <li>Number of study sessions completed:</li>
+                            <div id='stat1'>
+                                <Avg_Study_Periods type='study_sessions' colour={color} selection={Study_Sessions_button_selection} day_value = {study_sessions_in_past_day} week_value = {study_sessions_in_past_week} month_value = {study_sessions_in_past_month} year_value = {study_sessions_in_past_year}/>
+                            </div>
+                        <HorizontalRadioButton ButtonSelection={data=>setStudy_Sessions_Button_Selection(data)}/>
+                        <br />
+
+                        <li>Number of breaks:</li>
                         <div id='stat1'>
-                                <Avg_Study_Periods colour={color} selection={total_button_selection} day_value = '13' week_value = '22' month_value = '33' year_value = '47'/>
+                                <Avg_Study_Periods type='breaks' colour={color} selection={Breaks_button_selection} day_value = {breaks_in_past_day} week_value = {breaks_in_past_week} month_value = {breaks_in_past_month} year_value = {breaks_in_past_year}/>
                             </div>
-                        <HorizontalRadioButton ButtonSelection={data=>setTotal_Button_Selection(data)}/>
-                        
+                        <HorizontalRadioButton ButtonSelection={data=>setBreaks_Button_Selection(data)}/>
                         <br />
+
                         <li>Streak:</li>
-                        {/* <h2 id='stat2'>11 days</h2>
-                        <h2 id='stat2' style={{ color: {color} }}>11 days</h2> 
-                                      ^^^^ doesnt work : (               */}
                         <div id='stat2'>
-                            <Streak colour_test={color} streak={'11'} />
+                            <Streak colour_test={color} streak={streak} />
                         </div>    
-                        
                     </ul>
                 </div>
             </div>
@@ -107,9 +206,7 @@ function ProfilePage() {
             <div id='footer'>
                 <div>
                     Colour: 
-                    {/* <ColourPick/> */}
                     <input type="color" id="colour" name="colour" value={color} onChange={e => setColor(e.target.value)} />
-                    {/* <input type="color" id="colour" name="colour" /> */}
 
                 </div>
                 <div id='public'> 

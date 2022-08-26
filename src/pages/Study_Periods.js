@@ -17,10 +17,21 @@ const Avg_Per_Day = (props) => {
     }
 
 
+    if (props.type === 'study_time') {
     return(
         <h2 style={{
         color: props.colour,
-        }}>{display_value}</h2>
-        )}
+        }}>{display_value} minutes</h2>
+        )
+    }
+    else {
+        return(
+            <h2 style={{
+            color: props.colour,
+            }}>{display_value}</h2>
+            )
+    }
+    
+}
 
 export default Avg_Per_Day;
