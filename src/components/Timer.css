@@ -6,7 +6,24 @@
     flex-direction: column;
 }
 
+.nav {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.name {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 32px;
+    align-self: center;
+}
+
+.logos {
+    width: 32px;
+}
+
 .period-container {
+    margin-top: 40px;
     display: flex;
     align-self: center;
     justify-content: space-between;
