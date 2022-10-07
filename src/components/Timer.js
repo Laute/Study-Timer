@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
+import {Link} from "react-router-dom";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import './Timer.css';
 import StepperComponent from "./Stepper";
+import logo from '../pages/Header/logo.svg';
+import pfp from '../pages/Header/profile.svg'
 
 // total number of periods equals twice the number of study periods as there is
 // a break period for each study period
@@ -179,6 +182,13 @@ const Timer = () => {
 
   return (
     <div className="timer-container">
+      <nav>
+        <div className="nav">
+          <div><Link to="/timer"><img className="logos" src={logo} alt="Logo"/></Link></div>
+          <p className="name">POMODORO</p>
+          <div><Link to="/profile"><img className="logos" src={pfp}/></Link></div>
+        </div>
+      </nav>
       <div className="period-container">
         <div className={!isBreak ? "period-indicator active" : "period-indicator"}>
           <p className="period-label">Study</p>

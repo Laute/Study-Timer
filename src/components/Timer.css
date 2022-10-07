@@ -6,7 +6,24 @@
     flex-direction: column;
 }
 
+.nav {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.name {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 32px;
+    align-self: center;
+}
+
+.logos {
+    width: 32px;
+}
+
 .period-container {
+    margin-top: 40px;
     display: flex;
     align-self: center;
     justify-content: space-between;
@@ -70,7 +87,7 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     margin-top: 50px;
     padding: 20px 20px 0px 20px;
-    width: 300px;
+    width: 400px;
     align-self: center;
 }
 
@@ -112,8 +129,8 @@
 #study-input {
     font-family: 'Work Sans';
     padding: 0px 10px;
-    width: 40px; 
-    height: 29px;
+    width: 70px; 
+    height: 42px;
     outline: none;
     border: 1px solid #d6d9df;
     border-radius: 6px;
@@ -123,8 +140,8 @@
 #break-input {
     font-family: 'Work Sans';
     padding: 0px 10px;
-    width: 40px; 
-    height: 29px;
+    width: 70px; 
+    height: 42px;
     outline: none;
     border: 1px solid #d6d9df;
     border-radius: 6px;
@@ -134,8 +151,8 @@
 #long-break-input {
     font-family: 'Work Sans';
     padding: 0px 10px;
-    width: 40px; 
-    height: 29px;
+    width: 70px; 
+    height: 42px;
     outline: none;
     border: 1px solid #d6d9df;
     border-radius: 6px;

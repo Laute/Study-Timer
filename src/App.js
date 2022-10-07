@@ -22,7 +22,7 @@ function App() {
 
     return (
         <div>
-            {authDetails}
+            {/* {authDetails} */}
             <Router>
                 <Routes>
                     <Route path="/" element={<App />} />
